@@ -1,7 +1,11 @@
 package cz.edris.crypto.paillier;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.math.BigInteger;
 import java.util.Objects;
+
+import static cz.edris.crypto.paillier.MathSupport.L;
 
 public final class PrivateKey {
     public final BigInteger lambda;
@@ -10,7 +14,11 @@ public final class PrivateKey {
     public final BigInteger q;
     public final PublicKey publicKey;
 
-    public PrivateKey(BigInteger lambda, BigInteger mu, BigInteger p, BigInteger q, PublicKey publicKey) {
+    public PrivateKey(@NotNull BigInteger lambda,
+                      @NotNull BigInteger mu,
+                      @NotNull BigInteger p,
+                      @NotNull BigInteger q,
+                      @NotNull PublicKey publicKey) {
         this.lambda = lambda;
         this.mu = mu;
         this.p = p;
@@ -46,12 +54,15 @@ public final class PrivateKey {
                 '}';
     }
 
-    public BigInteger encrypt(BigInteger plain) {
+    @NotNull
+    public BigInteger encrypt(@NotNull BigInteger plain) {
         return publicKey.encrypt(plain);
     }
 
-    public BigInteger decrypt(BigInteger c) {
-        return Math.L(c.modPow(lambda, publicKey.nsquare), publicKey.n)
-                .multiply(mu).mod(publicKey.n);
+    @NotNull
+    public BigInteger decrypt(@NotNull BigInteger cipher) {
+        return L(cipher.modPow(lambda, publicKey.nsquare), publicKey.n)
+                .multiply(mu)
+                .mod(publicKey.n);
     }
 }

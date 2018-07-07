@@ -1,5 +1,6 @@
 package cz.edris.crypto.paillier;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.math.BigInteger;
@@ -8,13 +9,13 @@ import org.junit.Assert;
 
 public class KeyPairGeneratorTest {
 
-    @Test
+    @Test @Ignore
     public void initialTest() {
-        KeyPair keyPair = KeyPairGenerator.generate(512, 64, false);
+        KeyPair keyPair = KeyPair.generate(512, 64, false);
         PublicKey pubkey = keyPair.getPublicKey();
         PrivateKey seckey = keyPair.getPrivateKey();
 
-        BigInteger encryptedNumber = pubkey.encrypt(BigInteger.valueOf(1000));
+        BigInteger encryptedNumber = pubkey.encrypt(BigInteger.valueOf(1_000));
         System.out.println(encryptedNumber);
 
         BigInteger e2 = pubkey.encrypt(BigInteger.valueOf(100));
@@ -34,7 +35,7 @@ public class KeyPairGeneratorTest {
         BigInteger e7 = seckey.decrypt(e6);
         System.out.println(e7);
 
-        BigInteger e10 = seckey.decrypt(pubkey.multiply(pubkey.encrypt(BigInteger.valueOf(10)), BigInteger.valueOf(10000)));
+        BigInteger e10 = seckey.decrypt(pubkey.multiply(pubkey.encrypt(BigInteger.valueOf(10)), BigInteger.valueOf(10_000)));
         System.out.println(e10);
 
         BigInteger greetingSecret = pubkey.encrypt(new BigInteger("Hello world".getBytes()));
@@ -44,16 +45,22 @@ public class KeyPairGeneratorTest {
 
     @Test
     public void abstractionTest() {
-        KeyPair keyPair = KeyPairGenerator.generate(256, 64, false);
+        KeyPair keyPair = KeyPair.generate(2_048, 64, false);
 
-        Encryptor encryptor = new Paillier(keyPair.getPublicKey());
+        PublicKey publicKey = keyPair.getPublicKey();
 
-        CipherNumber encryptedSum = encryptor.sum(10, 100, 1000, 10000);
+        CipherNumber encryptedSum = publicKey.encryptNumber(1_000).add(10_000);
+
         System.out.println(encryptedSum.get());
-        Assert.assertEquals(BigInteger.valueOf(11110), encryptedSum.decrypt(keyPair.getPrivateKey()));
+        System.out.println(encryptedSum.decrypt(keyPair.getPrivateKey()));
 
-        CipherNumber encryptedProduct = encryptor.product(100, 100, 100);
+        Assert.assertEquals(BigInteger.valueOf(11_000), encryptedSum.decrypt(keyPair.getPrivateKey()));
+
+        CipherNumber encryptedProduct = publicKey.encryptNumber(1_000).multiply(1_000);
+
         System.out.println(encryptedProduct.get());
-        Assert.assertEquals(BigInteger.valueOf(1000000), encryptedProduct.decrypt(keyPair.getPrivateKey()));
+        System.out.println(encryptedProduct.decrypt(keyPair.getPrivateKey()));
+
+        Assert.assertEquals(BigInteger.valueOf(1_000_000), encryptedProduct.decrypt(keyPair.getPrivateKey()));
     }
 }
