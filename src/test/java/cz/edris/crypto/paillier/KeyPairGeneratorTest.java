@@ -42,25 +42,4 @@ public class KeyPairGeneratorTest {
         BigInteger greetingDecrypted = seckey.decrypt(greetingSecret);
         System.out.println(new String(greetingDecrypted.toByteArray()));
     }
-
-    @Test
-    public void abstractionTest() {
-        KeyPair keyPair = KeyPair.generate(2_048, 64, false);
-
-        PublicKey publicKey = keyPair.getPublicKey();
-
-        CipherNumber encryptedSum = publicKey.encryptNumber(1_000).add(10_000);
-
-        System.out.println(encryptedSum.get());
-        System.out.println(encryptedSum.decrypt(keyPair.getPrivateKey()));
-
-        Assert.assertEquals(BigInteger.valueOf(11_000), encryptedSum.decrypt(keyPair.getPrivateKey()));
-
-        CipherNumber encryptedProduct = publicKey.encryptNumber(1_000).multiply(1_000);
-
-        System.out.println(encryptedProduct.get());
-        System.out.println(encryptedProduct.decrypt(keyPair.getPrivateKey()));
-
-        Assert.assertEquals(BigInteger.valueOf(1_000_000), encryptedProduct.decrypt(keyPair.getPrivateKey()));
-    }
 }

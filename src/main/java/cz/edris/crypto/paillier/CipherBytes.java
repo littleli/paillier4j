@@ -13,9 +13,4 @@ public final class CipherBytes implements Decryptable<byte[]> {
     public byte[] decrypt(PrivateKey privateKey) {
         return privateKey.decrypt(cipher).toByteArray();
     }
-
-    @Override
-    public BigInteger get() {
-        return cipher;
-    }
 }

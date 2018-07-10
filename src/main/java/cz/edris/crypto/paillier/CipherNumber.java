@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigInteger;
 
 public final class CipherNumber implements Decryptable<BigInteger> {
-    private final transient PublicKey publicKey;
+    private final PublicKey publicKey;
     private final BigInteger cipher;
 
     public CipherNumber(PublicKey publicKey, BigInteger cipher) {
@@ -19,7 +19,7 @@ public final class CipherNumber implements Decryptable<BigInteger> {
     }
 
     public CipherNumber add(@NotNull CipherNumber otherCipher) {
-        return new CipherNumber(publicKey, publicKey.add(this.cipher, otherCipher.get()));
+        return new CipherNumber(publicKey, publicKey.add(this.cipher, otherCipher.cipher));
     }
 
     public CipherNumber add(@NotNull BigInteger plain) {
@@ -42,10 +42,5 @@ public final class CipherNumber implements Decryptable<BigInteger> {
 
     public CipherNumber multiply(long plain) {
         return multiply(BigInteger.valueOf(plain));
-    }
-
-    @Override
-    public BigInteger get() {
-        return cipher;
     }
 }

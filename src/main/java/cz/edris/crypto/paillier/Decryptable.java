@@ -15,11 +15,4 @@ public interface Decryptable<T> {
      * @return decrypted value
      */
     T decrypt(PrivateKey privateKey);
-
-    /**
-     * Cipher text accessor
-     *
-     * @return cipher number
-     */
-    BigInteger get();
 }

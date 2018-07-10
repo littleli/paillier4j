@@ -13,9 +13,4 @@ public final class CipherString implements Decryptable<String> {
     public String decrypt(PrivateKey privateKey) {
         return new String(privateKey.decrypt(cipher).toByteArray());
     }
-
-    @Override
-    public BigInteger get() {
-        return cipher;
-    }
 }
