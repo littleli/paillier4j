@@ -1,11 +1,9 @@
 package cz.edris.crypto.paillier;
 
 import com.pholser.junit.quickcheck.From;
-import com.pholser.junit.quickcheck.Mode;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 

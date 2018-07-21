@@ -27,11 +27,11 @@ final class MathSupport {
                 .mod(nsqr);
     }
 
-    static BigInteger L(BigInteger a, @NotNull BigInteger n) {
+    static BigInteger L(@NotNull BigInteger a, @NotNull BigInteger n) {
         return a.subtract(BigInteger.ONE).divide(n);
     }
 
-    static BigInteger lcm(BigInteger a, @NotNull BigInteger b) {
+    static BigInteger lcm(@NotNull BigInteger a, @NotNull BigInteger b) {
         return a.multiply(b).divide(a.gcd(b));
     }
 }

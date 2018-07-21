@@ -8,13 +8,13 @@ public final class CipherNumber implements Decryptable<BigInteger> {
     private final PublicKey publicKey;
     private final BigInteger cipher;
 
-    public CipherNumber(PublicKey publicKey, BigInteger cipher) {
+    public CipherNumber(@NotNull PublicKey publicKey, @NotNull BigInteger cipher) {
         this.publicKey = publicKey;
         this.cipher = cipher;
     }
 
     @Override
-    public BigInteger decrypt(PrivateKey privateKey) {
+    public BigInteger decrypt(@NotNull PrivateKey privateKey) {
         return privateKey.decrypt(cipher);
     }
 

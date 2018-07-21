@@ -5,8 +5,6 @@ import org.junit.Test;
 
 import java.math.BigInteger;
 
-import org.junit.Assert;
-
 public class KeyPairGeneratorTest {
 
     @Test @Ignore

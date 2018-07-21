@@ -1,7 +1,5 @@
 package cz.edris.crypto.paillier;
 
-import java.math.BigInteger;
-
 /**
  * This interface is a rich marker interface for all encapsulating cipher classes
  *

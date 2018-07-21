@@ -3,13 +3,15 @@ package cz.edris.crypto.paillier;
 import java.math.BigInteger;
 import java.security.SecureRandom;
 
+import org.jetbrains.annotations.NotNull;
+
 import static cz.edris.crypto.paillier.MathSupport.*;
 
 public final class KeyPair {
     private final PrivateKey privateKey;
     private final PublicKey publicKey;
 
-    KeyPair(PrivateKey privateKey, PublicKey publicKey) {
+    KeyPair(@NotNull PrivateKey privateKey,  @NotNull PublicKey publicKey) {
         this.privateKey = privateKey;
         this.publicKey = publicKey;
     }

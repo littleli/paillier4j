@@ -2,6 +2,7 @@ package cz.edris.crypto.paillier;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.util.Objects;
 
@@ -39,12 +40,6 @@ public final class PublicKey {
                 '}';
     }
 
-    @NotNull BigInteger encrypt(@NotNull BigInteger plain) {
-        return g.modPow(plain, nsquare)
-                .multiply(rand2toN(n).modPow(n, nsquare))
-                .mod(nsquare);
-    }
-
     @NotNull public CipherBytes encryptBytes(@NotNull byte[] bytes) {
         if (bytes.length == 0) {
             throw new IllegalArgumentException("Given byte array cannot be empty");
@@ -60,18 +55,29 @@ public final class PublicKey {
         return encryptNumber(BigInteger.valueOf(plain));
     }
 
-    @NotNull public CipherString encryptString(@NotNull String plain) {
-        if (plain.isEmpty()) {
+    public CipherString encryptString(@NotNull String plain) {
+        if (plain == null || plain.isEmpty()) {
             throw new IllegalArgumentException("Given string cannot be empty");
         }
-        return new CipherString(encrypt(new BigInteger(plain.getBytes())));
+        try {
+            byte[] bytes = plain.getBytes("UTF-8");
+            return new CipherString(encrypt(new BigInteger(bytes)));
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    @NotNull BigInteger add(@NotNull BigInteger cipher1, @NotNull BigInteger cipher2) {
+    BigInteger encrypt(@NotNull BigInteger plain) {
+        return g.modPow(plain, nsquare)
+                .multiply(rand2toN(n).modPow(n, nsquare))
+                .mod(nsquare);
+    }
+
+    BigInteger add(@NotNull BigInteger cipher1, @NotNull BigInteger cipher2) {
         return cipher1.multiply(cipher2).mod(nsquare);
     }
 
-    @NotNull BigInteger multiply(@NotNull BigInteger c, @NotNull BigInteger k) {
-        return c.modPow(k, nsquare);
+    BigInteger multiply(@NotNull BigInteger cipher, @NotNull BigInteger k) {
+        return cipher.modPow(k, nsquare);
     }
 }
