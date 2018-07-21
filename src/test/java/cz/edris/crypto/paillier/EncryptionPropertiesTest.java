@@ -12,7 +12,7 @@ import java.math.BigInteger;
 import static org.junit.Assert.*;
 
 @RunWith(JUnitQuickcheck.class)
-public class EncryptionProperties {
+public class EncryptionPropertiesTest {
     static KeyPair keyPair;
 
     @BeforeClass
@@ -36,6 +36,6 @@ public class EncryptionProperties {
         PublicKey publicKey = keyPair.getPublicKey();
         CipherString cipherText = publicKey.encryptString(plainText);
 
-        assertEquals("D(E(p) = p, where p is string", plainText, cipherText.decrypt(keyPair.getPrivateKey()));
+        assertEquals("D(E(p)) = p, where p is string", plainText, cipherText.decrypt(keyPair.getPrivateKey()));
     }
 }
