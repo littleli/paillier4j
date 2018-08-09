@@ -4,8 +4,6 @@ import com.pholser.junit.quickcheck.From;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.math.BigInteger;
@@ -13,13 +11,7 @@ import java.math.BigInteger;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnitQuickcheck.class)
-public class EncryptionPropertyTests {
-//    static KeyPair keyPair;
-//
-//    @BeforeClass
-//    public static void init() {
-//        keyPair = KeyPair.generate(1024, 64, false);
-//    }
+public class EncryptionPropertyTest {
 
     @Property(trials = 10)
     public void numberEncryption(@InRange(minLong = 0, maxLong = 10000) long plainText, @From(KeyPairGenerator.class) KeyPair keyPair) {

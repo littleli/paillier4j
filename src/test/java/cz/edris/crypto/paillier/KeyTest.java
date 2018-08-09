@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class KeyTests {
+public class KeyTest {
     static KeyPair keyPair;
 
     @BeforeClass
