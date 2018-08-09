@@ -20,9 +20,16 @@ public class KeyPairGenerator extends Generator<KeyPair> {
 
     @Override
     public KeyPair generate(SourceOfRandomness r, GenerationStatus generationStatus) {
-        return KeyPair.generate(
-                bits(r),
-                certainty(r),
-                r.nextBoolean());
+        int bits = bits(r);
+        int certainty = certainty(r);
+        boolean simpleVariant = r.nextBoolean();
+        KeyPair keyPair = KeyPair.generate(
+                bits,
+                certainty,
+                simpleVariant);
+        System.out.println("Key pair generated, bits = " + bits +
+                ", certainty = " + certainty +
+                ", simple variant = " + simpleVariant);
+        return keyPair;
     }
 }
