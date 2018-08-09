@@ -23,9 +23,6 @@ public final class CipherNumber implements Decryptable<BigInteger> {
     }
 
     public CipherNumber add(@NotNull BigInteger plain) {
-        if (plain.compareTo(BigInteger.ZERO) < 0) {
-            throw new ArithmeticException("Only zero or positive number is allowed");
-        }
         return add(publicKey.encryptNumber(plain));
     }
 
@@ -33,14 +30,30 @@ public final class CipherNumber implements Decryptable<BigInteger> {
         return add(BigInteger.valueOf(plain));
     }
 
+    @NotNull
+    public CipherNumber addUnsafe(@NotNull BigInteger plain) {
+        return add(publicKey.encryptNumberUnsafe(plain));
+    }
+
+    @NotNull
+    public CipherNumber addUnsafe(long plain) {
+        return addUnsafe(BigInteger.valueOf(plain));
+    }
+
     public CipherNumber multiply(@NotNull BigInteger plain) {
-        if (plain.compareTo(BigInteger.ZERO) <= 0) {
-            throw new ArithmeticException("Only positive number is allowed");
-        }
         return new CipherNumber(publicKey, publicKey.multiply(cipher, plain));
     }
 
     public CipherNumber multiply(long plain) {
         return multiply(BigInteger.valueOf(plain));
+    }
+
+    @Override
+    public String toString() {
+        return cipher.toString();
+    }
+
+    public String toString(int radix) {
+        return cipher.toString(radix);
     }
 }

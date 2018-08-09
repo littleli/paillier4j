@@ -1,9 +1,9 @@
 package cz.edris.crypto.paillier;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-
 import org.jetbrains.annotations.NotNull;
+
+import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 
 public final class CipherString implements Decryptable<String> {
     private final BigInteger cipher;
@@ -14,10 +14,15 @@ public final class CipherString implements Decryptable<String> {
 
     @Override
     public String decrypt(@NotNull PrivateKey privateKey) {
-        try {
-			return new String(privateKey.decrypt(cipher).toByteArray(), "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-		}
+        return new String(privateKey.decrypt(cipher).toByteArray(), StandardCharsets.UTF_8);
+    }
+
+    @Override
+    public String toString() {
+        return cipher.toString();
+    }
+
+    public String toString(int radix) {
+        return cipher.toString(radix);
     }
 }

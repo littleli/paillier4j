@@ -55,11 +55,6 @@ public final class PrivateKey {
     }
 
     @NotNull
-    public BigInteger encrypt(@NotNull BigInteger plain) {
-        return publicKey.encrypt(plain);
-    }
-
-    @NotNull
     public BigInteger decrypt(@NotNull BigInteger cipher) {
         return L(cipher.modPow(lambda, publicKey.nsquare), publicKey.n)
                 .multiply(mu)

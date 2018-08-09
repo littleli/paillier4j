@@ -2,8 +2,8 @@ package cz.edris.crypto.paillier;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 import static cz.edris.crypto.paillier.MathSupport.rand2toN;
@@ -40,18 +40,22 @@ public final class PublicKey {
                 '}';
     }
 
-    @NotNull public CipherBytes encryptBytes(@NotNull byte[] bytes) {
-        if (bytes.length == 0) {
-            throw new IllegalArgumentException("Given byte array cannot be empty");
-        }
-        return new CipherBytes(encrypt(new BigInteger(bytes)));
-    }
-
-    @NotNull public CipherNumber encryptNumber(@NotNull BigInteger plain) {
+    public CipherNumber encryptNumberUnsafe(@NotNull BigInteger plain) {
         return new CipherNumber(this, encrypt(plain));
     }
 
-    @NotNull public CipherNumber encryptNumber(long plain) {
+    public CipherNumber encryptNumberUnsafe(long plain) {
+        return new CipherNumber(this, encrypt(BigInteger.valueOf(plain)));
+    }
+
+    public CipherNumber encryptNumber(@NotNull BigInteger plain) {
+        if (plain.compareTo(BigInteger.ZERO) < 0) {
+            throw new IllegalArgumentException("Given number is negative");
+        }
+        return encryptNumberUnsafe(plain);
+    }
+
+    public CipherNumber encryptNumber(long plain) {
         return encryptNumber(BigInteger.valueOf(plain));
     }
 
@@ -59,12 +63,8 @@ public final class PublicKey {
         if (plain == null || plain.isEmpty()) {
             throw new IllegalArgumentException("Given string cannot be empty");
         }
-        try {
-            byte[] bytes = plain.getBytes("UTF-8");
-            return new CipherString(encrypt(new BigInteger(bytes)));
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-        }
+        byte[] bytes = plain.getBytes(StandardCharsets.UTF_8);
+        return new CipherString(encrypt(new BigInteger(bytes)));
     }
 
     BigInteger encrypt(@NotNull BigInteger plain) {
@@ -78,6 +78,9 @@ public final class PublicKey {
     }
 
     BigInteger multiply(@NotNull BigInteger cipher, @NotNull BigInteger k) {
+        if (k.compareTo(BigInteger.ZERO) < 1) {
+            throw new IllegalArgumentException("Only positive multiplier is possible");
+        }
         return cipher.modPow(k, nsquare);
     }
 }
