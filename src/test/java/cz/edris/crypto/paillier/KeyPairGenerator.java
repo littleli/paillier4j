@@ -15,7 +15,7 @@ public class KeyPairGenerator extends Generator<KeyPair> {
     }
 
     static int certainty(SourceOfRandomness s) {
-        return (int) Math.pow(2, s.nextBoolean() ? 32 : 64);
+        return s.nextBoolean() ? 32 : 64;
     }
 
     @Override
